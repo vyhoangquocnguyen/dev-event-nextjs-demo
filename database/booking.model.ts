@@ -1,4 +1,5 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
+import Event from './event.model';
 
 // TypeScript interface for Booking document
 export interface IBooking extends Document {
@@ -43,16 +44,10 @@ bookingSchema.index({ eventId: 1 });
 bookingSchema.pre('save', async function (next) {
   // Only validate eventId if it's new or modified
   if (this.isNew || this.isModified('eventId')) {
-    try {
-      // Dynamically import Event model to avoid circular dependency
-      const Event = mongoose.model('Event');
-      const eventExists = await Event.findById(this.eventId);
+    const eventExists = await Event.findById(this.eventId);
 
-      if (!eventExists) {
-        return next(new Error('Referenced event does not exist'));
-      }
-    } catch (error) {
-      return next(new Error('Error validating event reference'));
+    if (!eventExists) {
+      return next(new Error('Referenced event does not exist'));
     }
   }
 
