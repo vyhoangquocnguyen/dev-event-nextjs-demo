@@ -30,6 +30,7 @@ const eventSchema = new Schema<IEvent>(
     slug: {
       type: String,
       unique: true,
+      index: true,
       lowercase: true,
       trim: true,
     },
@@ -106,9 +107,6 @@ const eventSchema = new Schema<IEvent>(
     timestamps: true,
   }
 );
-
-// Index for faster slug lookups
-eventSchema.index({ slug: 1 });
 
 /**
  * Pre-save hook to generate slug from title and normalize date/time
