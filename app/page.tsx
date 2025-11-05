@@ -1,12 +1,13 @@
 import EventCard from "@/components/EventCard";
 import ExoloreBtn from "@/components/ExploreBtn";
 import { IEvent } from "@/database";
+import { cacheLife } from "next/cache";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const Page = async () => {
-  const response = await fetch(`${BASE_URL}/api/events`, {
-    cache: "no-store",
-  });
+  'use cache'
+  cacheLife('hours')
+  const response = await fetch(`${BASE_URL}/api/events`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch events: ${response.status}`);
