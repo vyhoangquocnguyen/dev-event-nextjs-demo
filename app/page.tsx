@@ -1,8 +1,19 @@
 import EventCard from "@/components/EventCard";
 import ExoloreBtn from "@/components/ExploreBtn";
-import { events } from "@/lib/constants";
+import { IEvent } from "@/database";
 
-const Page = () => {
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const Page = async () => {
+  const response = await fetch(`${BASE_URL}/api/events`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch events: ${response.status}`);
+  }
+
+  const { events } = await response.json();
+
   return (
     <section>
       <h1 className="text-center">
@@ -15,11 +26,13 @@ const Page = () => {
       <div className="mt-20 space-y-7">
         <h3>Feature Events</h3>
         <ul className="events">
-          {events.map((event) => (
-            <li key={event.title}>
-              <EventCard {...event} />
-            </li>
-          ))}
+          {events &&
+            events.length > 0 &&
+            events.map((event: IEvent) => (
+              <li key={event.title}>
+                <EventCard {...event} />
+              </li>
+            ))}
         </ul>
       </div>
     </section>
