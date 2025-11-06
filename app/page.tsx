@@ -5,8 +5,8 @@ import { cacheLife } from "next/cache";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const Page = async () => {
-  'use cache'
-  cacheLife('hours')
+  "use cache";
+  cacheLife("hours");
   const response = await fetch(`${BASE_URL}/api/events`);
 
   if (!response.ok) {
@@ -20,12 +20,10 @@ const Page = async () => {
       <h1 className="text-center">
         The Hub for every Dev <br /> You Cannot Miss
       </h1>
-      <p className="text-center mt-5">
-        Hackathons, Meetups, and Conferences all in one place
-      </p>
+      <p className="text-center mt-5">Hackathons, Meetups, and Conferences all in one place</p>
       <ExoloreBtn />
       <div className="mt-20 space-y-7">
-        <h3>Feature Events</h3>
+        <h3>Featured Events</h3>{" "}
         <ul className="events">
           {events &&
             events.length > 0 &&

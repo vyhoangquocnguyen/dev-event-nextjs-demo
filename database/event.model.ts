@@ -65,12 +65,10 @@ const eventSchema = new Schema<IEvent>(
     date: {
       type: String,
       required: [true, "Date is required"],
-      trim: true,
     },
     time: {
       type: String,
       required: [true, "Time is required"],
-      trim: true,
     },
     mode: {
       type: String,
