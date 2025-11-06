@@ -12,13 +12,17 @@ const Page = async () => {
     ? process.env.NEXT_PUBLIC_BASE_URL 
     : `https://${process.env.NEXT_PUBLIC_BASE_URL}`;
   
-  const response = await fetch(`${baseUrl}/api/events`);
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch events: ${response.status}`);
+  let events = [];
+  
+  try {
+    const response = await fetch(`${baseUrl}/api/events`);
+    if (response.ok) {
+      const data = await response.json();
+      events = data.events || [];
+    }
+  } catch (error) {
+    console.log('Unable to fetch events during build, will be generated on first request');
   }
-
-  const { events } = await response.json();
 
   return (
     <section>
