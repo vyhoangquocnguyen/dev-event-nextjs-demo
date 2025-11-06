@@ -2,7 +2,7 @@ import EventDetails from "@/components/EventDetails";
 import { Suspense } from "react";
 
 const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  const slug = await params.then((p) => p.slug);
+  const slug = params.then((p) => p.slug);
 
   return (
     <main>
