@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   cacheComponents: true,
-  experimental: {
-    dynamicIO: true,
-  },
   images: {
     remotePatterns: [
       {
