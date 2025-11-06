@@ -13,6 +13,6 @@ export const createBooking = async ({ eventId, slug, email }: { eventId: string;
     return { success: true };
   } catch (error) {
     console.error("create booking failed", error);
-    return { success: false };
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
   }
 };
