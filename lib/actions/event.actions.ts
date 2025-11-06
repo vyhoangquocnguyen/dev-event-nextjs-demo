@@ -2,8 +2,12 @@
 
 import Event from "@/database/event.model";
 import dbConnect from "@/lib/mongodb";
+import { cacheLife } from "next/cache";
 
 export const getSimilarEventBySlug = async (slug: string) => {
+  "use cache";
+  cacheLife("hours");
+  
   try {
     await dbConnect();
     const event = await Event.findOne({ slug });
