@@ -23,7 +23,7 @@ const Page = async () => {
       <p className="text-center mt-5">Hackathons, Meetups, and Conferences all in one place</p>
       <ExoloreBtn />
       <div className="mt-20 space-y-7">
-        <h3>Feature Events</h3>
+        <h3>Featured Events</h3>{" "}
         <ul className="events">
           {events &&
             events.length > 0 &&

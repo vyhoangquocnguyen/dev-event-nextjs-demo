@@ -20,27 +20,27 @@ const EventAgenda = ({ agendaItems }: { agendaItems: string[] }) => (
   <div className="agenda">
     <h2>Agenda</h2>
     <ul>
-      {agendaItems.map((item) => (
-        <li key={item}>{item}</li>
-      ))}
+      {agendaItems.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}{" "}
     </ul>
   </div>
 );
 
 const EventTags = ({ tags }: { tags: string[] }) => (
   <div className="flex flex-row gap-1.5 flex-wrap">
-    {tags.map((tag) => (
-      <div className="pill" key={tag}>
+    {tags.map((tag, index) => (
+      <div className="pill" key={index}>
         {tag}
       </div>
-    ))}
+    ))}{" "}
   </div>
 );
 
-const EventDetails = async ({ params }: { params: Promise<string> }) => {
+const EventDetails = async ({ params }: { params: string }) => {
   "use cache";
   cacheLife("hours");
-  const slug = await params;
+  const slug = params;
 
   let event;
   try {
@@ -52,6 +52,7 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
       if (request.status === 404) {
         return notFound();
       }
+      console.error(`Failed to fetch event: ${request.status} - ${request.statusText}`);
       throw new Error(`Failed to fetch event: ${request.statusText}`);
     }
 
@@ -62,7 +63,11 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
       return notFound();
     }
   } catch (error) {
-    console.error("Error fetching event:", error);
+    if (error instanceof Error && error.message.includes("Failed to fetch event")) {
+      console.error("Error fetching event:", error);
+      throw error; // Re-throw to show error page instead of 404
+    }
+    console.error("Unexpected error:", error);
     return notFound();
   }
 
@@ -70,7 +75,7 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
 
   if (!description) return notFound();
 
-  const bookings = 10;
+  const bookings = event.bookings ?? 0;
 
   const similarEvents: IEvent[] = await getSimilarEventBySlug(slug);
 

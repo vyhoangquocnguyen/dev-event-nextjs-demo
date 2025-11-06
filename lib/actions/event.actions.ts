@@ -12,8 +12,7 @@ export const getSimilarEventBySlug = async (slug: string) => {
       return [];
     }
 
-    // Find events with matching slugs, excluding the current event
-    // .lean() returns plain JavaScript objects instead of Mongoose documents
+    // Find events with matching tags, excluding the current event    // .lean() returns plain JavaScript objects instead of Mongoose documents
     return await Event.find({
       _id: { $ne: event._id },
       tags: { $in: event.tags },
@@ -21,7 +20,7 @@ export const getSimilarEventBySlug = async (slug: string) => {
       .limit(3)
       .lean();
   } catch (error) {
-    console.error('Error fetching similar events:', error);
+    console.error("Error fetching similar events:", error);
     return [];
   }
 };
