@@ -42,9 +42,14 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
   cacheLife("hours");
   const slug = await params;
 
+  // Ensure BASE_URL has protocol
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.startsWith("http")
+    ? process.env.NEXT_PUBLIC_BASE_URL
+    : `https://${process.env.NEXT_PUBLIC_BASE_URL}`;
+
   let event;
   try {
-    const request = await fetch(`${BASE_URL}/api/events/${slug}`, {
+    const request = await fetch(`${baseUrl}/api/events/${slug}`, {
       next: { revalidate: 60 },
     });
 

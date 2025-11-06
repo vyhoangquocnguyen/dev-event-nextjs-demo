@@ -3,11 +3,16 @@ import ExoloreBtn from "@/components/ExploreBtn";
 import { IEvent } from "@/database";
 import { cacheLife } from "next/cache";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const Page = async () => {
   "use cache";
   cacheLife("hours");
-  const response = await fetch(`${BASE_URL}/api/events`);
+  
+  // Ensure BASE_URL has protocol
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.startsWith('http') 
+    ? process.env.NEXT_PUBLIC_BASE_URL 
+    : `https://${process.env.NEXT_PUBLIC_BASE_URL}`;
+  
+  const response = await fetch(`${baseUrl}/api/events`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch events: ${response.status}`);
